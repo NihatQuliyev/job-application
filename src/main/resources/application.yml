@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: job-application
+  profiles:
+    include:
+      - db
+      - common
+      - email
+      - security
+server:
+  port: 8080

@@ -1,0 +1,20 @@
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: elchin@div.edu.az
+    password: umab uavo zuph aidz
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+application:
+  mail:
+    host: localhost
+    http: http://
+    user-confirmation: /api/v1/users/confirmation?token=
+    admin-confirmation: /api/v1/admin/confirmation?token=
+    reset-password: /api/v1/users/reset-password?username=
