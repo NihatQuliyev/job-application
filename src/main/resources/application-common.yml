@@ -2,3 +2,8 @@ send:
   email:
     otp:
       second-time: 180
+
+application:
+  file:
+    user-image: user_images
+    user-cv: user_cv

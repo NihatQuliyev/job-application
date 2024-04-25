@@ -154,6 +154,5 @@ public class IAuthService implements AuthService {
         String username =(String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         return userRepository.findByEmailAndIsEnableTrue(username).orElseThrow();
-
     }
 }

@@ -16,9 +16,11 @@ import com.aztu.job_application.service.CompanyService;
 import com.aztu.job_application.service.VacancyService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static com.aztu.job_application.model.enums.ExceptionMessage.NOT_FOUND_VACANCY;
@@ -74,5 +76,23 @@ public class IVacancyService implements VacancyService {
         return ResponseEntity.ok(vacancyRepository.findAllByCategory_Id(id).stream()
                 .map(vacancyMapper::map)
                 .toList());
+    }
+
+    @Override
+    public ResponseEntity<List<VacancyResponse>> findAllBySalary(BigDecimal salary) {
+        return ResponseEntity.ok(vacancyRepository.findAllByVacancyDetail_Salary(salary).stream()
+                .map(vacancyMapper::map)
+                .toList());
+    }
+
+    @Override
+    public ResponseEntity<List<VacancyResponse>> findAllByCompanyName(String companyName) {
+        return ResponseEntity.ok(vacancyRepository.findAllByCompany_Name(companyName));
+    }
+
+    @Override
+    public Vacancy getById(long vacancyId) {
+        return vacancyRepository.findById(vacancyId)
+                .orElseThrow(() -> new ApplicationException(exceptionService.exceptionResponse(NOT_FOUND_VACANCY.getMessage(), HttpStatus.NOT_FOUND)));
     }
 }

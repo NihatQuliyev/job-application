@@ -1,11 +1,10 @@
 package com.aztu.job_application.service.impl;
 
-import com.aztu.job_application.model.enums.ExceptionMessage;
 import com.aztu.job_application.model.exception.ApplicationException;
 import com.aztu.job_application.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,6 +18,12 @@ import static com.aztu.job_application.model.enums.ExceptionMessage.FILE_NOT_FOU
 @Service
 @RequiredArgsConstructor
 public class IFileService implements FileService {
+
+    @Value("${application.file.user-image}")
+    private String images;
+
+    @Value("${application.file.user-cv}")
+    private String cv;
 
     private final Path ROOT = Paths.get("upload");
     private final ExceptionService exceptionService;

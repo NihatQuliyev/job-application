@@ -11,9 +11,10 @@ public class DaoDetailsAuthenticationProvider extends DaoAuthenticationProvider 
     @Override
     protected Authentication createSuccessAuthentication(Object principal, Authentication authentication, UserDetails userDetails) {
 
-        UsernamePasswordAuthenticationToken successAuthentication = (UsernamePasswordAuthenticationToken) super.createSuccessAuthentication(principal, authentication, userDetails);
+        UsernamePasswordAuthenticationToken successAuthentication = (UsernamePasswordAuthenticationToken)
+                super.createSuccessAuthentication(principal, authentication, userDetails);
         User user = (User) userDetails;
-        successAuthentication.setDetails(new AuthenticationDetails(null, user.getId()));
+        successAuthentication.setDetails(new AuthenticationDetails(user.getId()));
         return successAuthentication;
     }
 }

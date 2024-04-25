@@ -26,7 +26,8 @@ public enum ExceptionMessage {
     EMPLOYMENT_STATUS_NOT_FOUND("Employment status not found!", HttpStatus.NOT_FOUND),
     LANGUAGE_NOT_FOUND("Language not found!", HttpStatus.NOT_FOUND),
     LANGUAGE_LEVEL_NOT_FOUND("Language level not found!", HttpStatus.NOT_FOUND),
-    NOT_FOUND_VACANCY("Not found vacancy!", HttpStatus.NOT_FOUND);
+    NOT_FOUND_VACANCY("Not found vacancy!", HttpStatus.NOT_FOUND),
+    JOB_APPLY_NOT_FOUND("Not found job apply!",HttpStatus.NOT_FOUND);
 
 
     private final String message;

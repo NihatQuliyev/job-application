@@ -9,7 +9,5 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 @NoArgsConstructor
 @Builder
 public class AuthenticationDetails {
-    private WebAuthenticationDetailsSource webAuthenticationDetailsSource;
     private long id;
-
 }

@@ -1,10 +1,9 @@
 package com.aztu.job_application.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Builder
@@ -20,6 +19,12 @@ public class JobApply {
     private String text;
 
     private String cv;
+
+    @ManyToOne
+    private User user;
+
+    @ManyToOne
+    private Vacancy vacancy;
 
 
 }
