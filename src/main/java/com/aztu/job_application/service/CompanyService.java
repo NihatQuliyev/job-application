@@ -9,9 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface CompanyService {
-    ResponseEntity<Void> createCompany(CompanyRequest companyRequest);
+    ResponseEntity<Void> createCompany(CompanyRequest companyRequest, MultipartFile multipartFile);
 
-    ResponseEntity<Void> addCompanyImage(MultipartFile multipartFile, long companyId);
 
     Company getById(long companyId);
 

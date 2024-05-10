@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert_multiple_language_levels
+      author: elchinhuseynli
+      changes:
+        - insert:
+            tableName: language_level
+            columns:
+              - column:
+                  name: name
+                  value: A1
+        - insert:
+            tableName: language_level
+            columns:
+              - column:
+                  name: name
+                  value: A2
+        - insert:
+            tableName: language_level
+            columns:
+              - column:
+                  name: name
+                  value: B1
+        - insert:
+            tableName: language_level
+            columns:
+              - column:
+                  name: name
+                  value: B2
+        - insert:
+            tableName: language_level
+            columns:
+              - column:
+                  name: name
+                  value: C1
+        - insert:
+            tableName: language_level
+            columns:
+              - column:
+                  name: name
+                  value: C2

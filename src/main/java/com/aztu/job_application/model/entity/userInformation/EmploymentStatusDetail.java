@@ -27,6 +27,6 @@ public class EmploymentStatusDetail {
 
     private String startAndEndDate;
 
-    @OneToOne
+    @ManyToOne
     private EmploymentStatus employmentStatus;
 }

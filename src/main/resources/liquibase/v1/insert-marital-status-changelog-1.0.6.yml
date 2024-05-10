@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert_multiple_marital_statuses
+      author: elchinhuseynli
+      changes:
+        - insert:
+            tableName: marital_status
+            columns:
+              - column:
+                  name: name
+                  value: married
+        - insert:
+            tableName: marital_status
+            columns:
+              - column:
+                  name: name
+                  value: unmarried

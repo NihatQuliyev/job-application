@@ -7,8 +7,15 @@ import com.aztu.job_application.model.dto.request.userInformation.EmploymentStat
 import com.aztu.job_application.model.dto.request.userInformation.LanguageRequest;
 import com.aztu.job_application.model.dto.request.UserRequest;
 import com.aztu.job_application.model.dto.response.UserResponse;
+import com.aztu.job_application.model.dto.response.userInformation.LanguageAndLevelResponse;
+import com.aztu.job_application.model.entity.User;
 import com.aztu.job_application.model.entity.userInformation.*;
+import com.aztu.job_application.model.exception.ApplicationException;
 import com.aztu.job_application.repository.UserRepository;
+import com.aztu.job_application.repository.userInformation.LanguageLevelRepository;
+import com.aztu.job_application.repository.userInformation.LanguageRepository;
+import com.aztu.job_application.service.FileService;
+import com.aztu.job_application.service.impl.ExceptionService;
 import com.aztu.job_application.service.userInformation.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +23,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static com.aztu.job_application.model.enums.ExceptionMessage.LANGUAGE_LEVEL_NOT_FOUND;
+import static com.aztu.job_application.model.enums.ExceptionMessage.LANGUAGE_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +43,10 @@ public class IUserInformationService implements UserInformationService {
     private final EmploymentStatusDetailMapper employmentStatusDetailMapper;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final LanguageRepository languageRepository;
+    private final LanguageLevelRepository languageLevelRepository;
+    private final ExceptionService exceptionService;
+    private final FileService fileService;
 
 
     public UserInformation buildUserInformation(UserRequest userRequest) {
@@ -55,16 +68,19 @@ public class IUserInformationService implements UserInformationService {
             employmentStatusDetails.add(employmentStatusDetail);
         }
 
-        List<Language> languagesList = new LinkedList<>();
+        List<LanguageAndLevel> languagesList = new LinkedList<>();
         for (LanguageRequest languageRequest : userRequest.getUserInformation().getLanguages()) {
 
             Language language = languageService.findById(languageRequest.getLanguageId());
-            language.setLanguageLevel(languageLevelService.findById(languageRequest.getLanguageLevelId()));
-            languagesList.add(language);
+            LanguageLevel languageLevel = languageLevelService.findById(languageRequest.getLanguageLevelId());
+            LanguageAndLevel languageAndLevel = LanguageAndLevel.builder()
+                    .languageId(language.getId())
+                    .languageLevelId(languageLevel.getId())
+                    .build();
+            languagesList.add(languageAndLevel);
         }
 
         List<SoftSkill> softSkills = softSkillService.findAll(userRequest.getUserInformation().getSoftSkillsId());;
-
         userInformation.setGender(gender);
         userInformation.setMilitaryQualification(militaryQualification);
         userInformation.setMaritalStatus(maritalStatus);
@@ -78,38 +94,67 @@ public class IUserInformationService implements UserInformationService {
 
     @Override
     public ResponseEntity<List<UserResponse>> findByNameOrSurname(String key) {
-        List<UserResponse> users = userRepository.findByNameOrSurname(key).stream()
-                .map(userMapper::map)
-                .collect(Collectors.toList());
+        List<User> byNameOrSurname = userRepository.findByNameOrSurname(key);
 
+        List<UserResponse> users = new LinkedList<>();
+        for (User user : byNameOrSurname) {
+            UserResponse userResponse = userMapper.map(user);
+            users.add(findLanguage(user,userResponse));
+        }
         return ResponseEntity.ok(users);
+    }
+
+    public UserResponse findLanguage(User user, UserResponse userResponse) {
+        List<LanguageAndLevelResponse> languageAndLevelRespons = new LinkedList<>();
+        for (LanguageAndLevel languageAndLevel : user.getUserInformation().getLanguages()) {
+            Language language = languageRepository.findById(languageAndLevel.getLanguageId()).orElseThrow(() -> new ApplicationException(exceptionService.exceptionResponse(LANGUAGE_NOT_FOUND.getMessage(), LANGUAGE_NOT_FOUND.getHttpStatus())));
+            LanguageLevel languageLevel = languageLevelRepository.findById(languageAndLevel.getLanguageId()).orElseThrow(() -> new ApplicationException(exceptionService.exceptionResponse(LANGUAGE_LEVEL_NOT_FOUND.getMessage(), LANGUAGE_LEVEL_NOT_FOUND.getHttpStatus())));
+            LanguageAndLevelResponse languageAndLevelResponse = LanguageAndLevelResponse.builder()
+                    .language(language.getName())
+                    .languageLevel(languageLevel.getName())
+                    .build();
+            languageAndLevelRespons.add(languageAndLevelResponse);
+        }
+        userResponse.getUserInformation().setProfileImage(fileService.findByName(user.getUserInformation().getProfileImage()));
+        userResponse.getUserInformation().setLanguages(languageAndLevelRespons);
+
+        return userResponse;
     }
 
     @Override
     public ResponseEntity<List<UserResponse>> findByEducationLevel(long educationLevelId) {
-        List<UserResponse> users = userRepository.findByUserInformation_EducationLevelDetail_EducationLevel_Id(educationLevelId).stream()
-                .map(userMapper::map)
-                .collect(Collectors.toList());
 
-        return ResponseEntity.ok(users);
+        List<User> users = userRepository.findByUserInformation_EducationLevelDetail_EducationLevel_Id(educationLevelId);
+        List<UserResponse> usersResponses = new LinkedList<>();
+        for (User user : users) {
+            UserResponse userResponse = userMapper.map(user);
+            usersResponses.add(findLanguage(user,userResponse));
+        }
+        return ResponseEntity.ok(usersResponses);
     }
 
     @Override
     public ResponseEntity<List<UserResponse>> findByUserInformation_Address(String address) {
-        List<UserResponse> users = userRepository.findByUserInformation_Address(address).stream()
-                .map(userMapper::map)
-                .collect(Collectors.toList());
 
-        return ResponseEntity.ok(users);
+        List<User> users = userRepository.findByUserInformation_Address(address);
+
+        List<UserResponse> usersResponses = new LinkedList<>();
+        for (User user : users) {
+            UserResponse userResponse = userMapper.map(user);
+            usersResponses.add(findLanguage(user,userResponse));
+        }
+        return ResponseEntity.ok(usersResponses);
     }
 
     @Override
     public ResponseEntity<List<UserResponse>> findByUserInformation_MilitaryQualification_Id(long militaryQualificationId) {
-        List<UserResponse> users = userRepository
-                .findByUserInformation_MilitaryQualification_Id(militaryQualificationId).stream()
-                .map(userMapper::map)
-                .collect(Collectors.toList());
+        List<User> users = userRepository.findByUserInformation_MilitaryQualification_Id(militaryQualificationId);
 
-        return ResponseEntity.ok(users);
+        List<UserResponse> usersResponses = new LinkedList<>();
+        for (User user : users) {
+            UserResponse userResponse = userMapper.map(user);
+            usersResponses.add(findLanguage(user,userResponse));
+        }
+        return ResponseEntity.ok(usersResponses);
     }
 }

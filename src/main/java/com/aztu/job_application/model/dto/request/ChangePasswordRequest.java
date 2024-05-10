@@ -1,6 +1,5 @@
 package com.aztu.job_application.model.dto.request;
 
-import com.aztu.job_application.model.enums.ExceptionMessage;
 import com.aztu.job_application.model.exception.ApplicationException;
 import com.aztu.job_application.service.impl.ExceptionService;
 import jakarta.validation.constraints.NotBlank;
@@ -15,21 +14,22 @@ import static com.aztu.job_application.model.enums.ExceptionMessage.DIFFER_PASSW
 @Getter
 @Setter
 @RequiredArgsConstructor
+
 public class ChangePasswordRequest {
 
-    private ExceptionService exceptionService;
+    private final ExceptionService exceptionService;
 
-    @NotBlank
+    @NotBlank(message = "Old password cannot be blank")
     private String oldPassword;
 
-    @NotBlank
+    @NotBlank(message = "New password cannot be blank")
     @Pattern(
             regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
             message = PASSWORD_REGEX
     )
     private String newPassword;
 
-    @NotBlank
+    @NotBlank(message = "Repeat password cannot be blank")
     @Pattern(
             regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
             message = PASSWORD_REGEX
@@ -37,7 +37,8 @@ public class ChangePasswordRequest {
     private String repeatPassword;
 
 
-    public ChangePasswordRequest(String newPassword, String repeatPassword) {
+    public ChangePasswordRequest(ExceptionService exceptionService, String newPassword, String repeatPassword) {
+        this.exceptionService = exceptionService;
         differPassword(newPassword, repeatPassword);
         this.newPassword = newPassword;
         this.repeatPassword = repeatPassword;

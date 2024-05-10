@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert_multiple_education_levels
+      author: elchinhuseynli
+      changes:
+        - insert:
+            tableName: education_level
+            columns:
+              - column:
+                  name: name
+                  value: bachelor
+        - insert:
+            tableName: education_level
+            columns:
+              - column:
+                  name: name
+                  value: master
+        - insert:
+            tableName: education_level
+            columns:
+              - column:
+                  name: name
+                  value: other

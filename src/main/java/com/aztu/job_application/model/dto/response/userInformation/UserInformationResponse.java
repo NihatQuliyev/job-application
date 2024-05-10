@@ -41,7 +41,7 @@ public class UserInformationResponse {
 
 
     //TODO: Professional info
-    private List<LanguageResponse> languages;
+    private List<LanguageAndLevelResponse> languages;
 
     private List<SoftSkillResponse> softSkills;
 

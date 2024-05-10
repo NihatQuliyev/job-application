@@ -1,5 +1,7 @@
 package com.aztu.job_application.config;
 
+import com.aztu.job_application.entrypoint.CustomAccessDeniedHandler;
+import com.aztu.job_application.entrypoint.CustomAuthenticationEntryPoint;
 import com.aztu.job_application.model.dao.DaoDetailsAuthenticationProvider;
 import com.aztu.job_application.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
@@ -53,4 +57,13 @@ public class CommonConfig {
         return new RestTemplate();
     }
 
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return new CustomAuthenticationEntryPoint();
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
+    }
 }

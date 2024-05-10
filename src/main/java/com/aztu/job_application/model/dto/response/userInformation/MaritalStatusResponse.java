@@ -9,5 +9,7 @@ import lombok.*;
 @Builder
 @ToString
 public class MaritalStatusResponse {
+
+    private long id;
     private String name;
 }

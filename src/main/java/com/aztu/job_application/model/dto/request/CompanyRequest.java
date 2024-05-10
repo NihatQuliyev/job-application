@@ -12,7 +12,7 @@ import static com.aztu.job_application.model.constant.ValidationConstant.NAME_RE
 @Builder
 public class CompanyRequest {
 
-    @NotBlank(message = NAME_REGEX)
+    @NotBlank(message = "Company name cannot be blank")
     private String name;
 
 }

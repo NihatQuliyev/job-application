@@ -6,7 +6,9 @@ import java.nio.file.Path;
 
 
 public interface FileService {
-    void upload(MultipartFile multipartFile);
+    void upload(MultipartFile multipartFile, String imageName);
 
     Path findByName(String imageName);
+
+    void deleteFile(String profileImage);
 }

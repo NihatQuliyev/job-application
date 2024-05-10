@@ -13,7 +13,7 @@ spring:
 
 application:
   mail:
-    host: localhost
+    host: ${APP_HOST:localhost}
     http: http://
     user-confirmation: /api/v1/users/confirmation?token=
     admin-confirmation: /api/v1/admin/confirmation?token=

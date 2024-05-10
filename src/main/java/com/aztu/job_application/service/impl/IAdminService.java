@@ -3,9 +3,7 @@ package com.aztu.job_application.service.impl;
 import com.aztu.job_application.mapper.UserMapper;
 import com.aztu.job_application.model.dto.request.AdminRequest;
 import com.aztu.job_application.model.dto.request.PasswordRequest;
-import com.aztu.job_application.model.dto.response.CompanyResponse;
 import com.aztu.job_application.model.dto.response.UserResponse;
-import com.aztu.job_application.model.entity.Company;
 import com.aztu.job_application.model.entity.User;
 import com.aztu.job_application.model.enums.RoleType;
 import com.aztu.job_application.service.AdminService;
@@ -17,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -35,14 +34,12 @@ public class IAdminService implements AdminService {
 
     @Override
     @Transactional
-    public ResponseEntity<Void> registration(AdminRequest adminRequest) {
+    public ResponseEntity<Void> registration(AdminRequest adminRequest, MultipartFile multipartFile) {
         User user = userMapper.map(adminRequest);
-
-        String password = UUID.randomUUID().toString();
+        String password = UUID.randomUUID() + ".jpg";
         user.setPassword(passwordEncoder.encode(password));
-        User admin = userService.registration(user, RoleType.ADMIN);
+        User admin = userService.registration(user, RoleType.ADMIN, multipartFile);
         tokenService.adminConfirm(admin);
-
         return ResponseEntity.noContent().build();
     }
 
@@ -56,18 +53,6 @@ public class IAdminService implements AdminService {
         return ResponseEntity.noContent().build();
     }
 
-    @Override
-    public ResponseEntity<List<UserResponse>> findAllUsers() {
-        List<User> users = userService.findAllUsers();
 
-        List<UserResponse> userResponses = new LinkedList<>();
-
-        for (User user : users) {
-            UserResponse userResponse = userMapper.map(user);
-            userResponse.getUserInformation().setProfileImage(fileService.findByName(user.getUserInformation().getProfileImage()));
-            userResponses.add(userResponse);
-        }
-        return ResponseEntity.ok(userResponses);
-    }
 
 }

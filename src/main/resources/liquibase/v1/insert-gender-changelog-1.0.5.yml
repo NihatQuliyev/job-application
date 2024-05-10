@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert_multiple_genders
+      author: elchinhuseynli
+      changes:
+        - insert:
+            tableName: gender
+            columns:
+              - column:
+                  name: name
+                  value: male
+        - insert:
+            tableName: gender
+            columns:
+              - column:
+                  name: name
+                  value: female

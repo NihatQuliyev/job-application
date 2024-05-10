@@ -9,5 +9,7 @@ import lombok.*;
 @Builder
 @ToString
 public class EmploymentStatusResponse {
+
+    private long id;
     private String name;
 }

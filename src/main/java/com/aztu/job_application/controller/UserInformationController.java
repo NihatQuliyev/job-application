@@ -1,7 +1,8 @@
 package com.aztu.job_application.controller;
 
 import com.aztu.job_application.model.dto.response.UserResponse;
-import com.aztu.job_application.service.userInformation.UserInformationService;
+import com.aztu.job_application.model.dto.response.userInformation.*;
+import com.aztu.job_application.service.userInformation.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,14 @@ import java.util.List;
 @RequestMapping("/api/v1/user-informations")
 public class UserInformationController {
     private final UserInformationService userInformationService;
+    private final GenderService genderService;
+    private final MaritalStatusService maritalStatusService;
+    private final EducationLevelService educationLevelService;
+    private final EmploymentStatusService employmentStatusService;
+    private final LanguageService languageService;
+    private final LanguageLevelService languageLevelService;
+    private final SoftSkillService softSkillService;
+    private final MilitaryQualificationService militaryQualificationService;
 
     @GetMapping("/search-by-name-or-surname")
     public ResponseEntity<List<UserResponse>> findByNameOrSurname(@RequestParam String key) {
@@ -40,4 +49,54 @@ public class UserInformationController {
 
         return userInformationService.findByUserInformation_MilitaryQualification_Id(militaryQualificationId);
     }
+
+    @GetMapping("/genders")
+    public ResponseEntity<List<GenderResponse>> findAllGenders() {
+
+        return genderService.findAll();
+    }
+
+    @GetMapping("/marital-status")
+    public ResponseEntity<List<MaritalStatusResponse>> findAllMaritalStatus() {
+
+        return maritalStatusService.findAll();
+    }
+
+
+    @GetMapping("/education-level")
+    public ResponseEntity<List<EducationLevelResponse>> findAllEducationLevels() {
+
+        return educationLevelService.findAll();
+    }
+
+    @GetMapping("/employment-status")
+    public ResponseEntity<List<EmploymentStatusResponse>> findAllEmploymentStatus() {
+
+        return employmentStatusService.findAll();
+    }
+
+    @GetMapping("/languages")
+    public ResponseEntity<List<LanguageResponse>> findAllLanguages() {
+
+        return languageService.findAll();
+    }
+
+    @GetMapping("/languages-levels")
+    public ResponseEntity<List<LanguageLevelResponse>> findAllLanguagesLevels() {
+
+        return languageLevelService.findAll();
+    }
+
+    @GetMapping("/soft-skills")
+    public ResponseEntity<List<SoftSkillResponse>> findAllSoftSkills() {
+
+        return softSkillService.findAll();
+    }
+
+    @GetMapping("/military-qualifications")
+    public ResponseEntity<List<MilitaryQualificationResponse>> findAllMilitaryQualifications() {
+
+        return militaryQualificationService.findAll();
+    }
+
 }

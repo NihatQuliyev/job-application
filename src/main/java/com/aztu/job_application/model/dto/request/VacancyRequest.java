@@ -1,6 +1,6 @@
 package com.aztu.job_application.model.dto.request;
 
-import com.aztu.job_application.model.dto.response.TableDetailResponse;
+import jakarta.validation.Valid;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -16,6 +16,7 @@ public class VacancyRequest {
 
     private long companyId;
 
+    @Valid
     private VacancyDetailRequest vacancyDetail;
 
 }

@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert_multiple_military_qualifications
+      author: elchinhuseynli
+      changes:
+        - insert:
+            tableName: military_qualification
+            columns:
+              - column:
+                  name: name
+                  value: was
+        - insert:
+            tableName: military_qualification
+            columns:
+              - column:
+                  name: name
+                  value: wasn't
+        - insert:
+            tableName: military_qualification
+            columns:
+              - column:
+                  name: name
+                  value: I am leaving for military service
+        - insert:
+            tableName: military_qualification
+            columns:
+              - column:
+                  name: name
+                  value: I am temporarily gone
+        - insert:
+            tableName: military_qualification
+            columns:
+              - column:
+                  name: name
+                  value: other

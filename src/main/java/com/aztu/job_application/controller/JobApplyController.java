@@ -1,12 +1,21 @@
 package com.aztu.job_application.controller;
 
+import com.aztu.job_application.mapper.JobApplyMapper;
 import com.aztu.job_application.model.dto.request.JobApplyRequest;
+import com.aztu.job_application.model.dto.response.JobApplyResponse;
+import com.aztu.job_application.model.entity.JobApply;
+import com.aztu.job_application.model.entity.User;
+import com.aztu.job_application.repository.JobApplyRepository;
+import com.aztu.job_application.service.FileService;
 import com.aztu.job_application.service.JobApplyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.LinkedList;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/users/job-apply")
@@ -15,14 +24,16 @@ public class JobApplyController {
 
     private final JobApplyService jobApplyService;
 
+
     @PostMapping
-    public ResponseEntity<Void> jobApply(@RequestBody @Valid JobApplyRequest jobApplyRequest) {
-        return jobApplyService.jobApply(jobApplyRequest);
+    public ResponseEntity<Void> jobApply(@RequestPart("data") @Valid JobApplyRequest jobApplyRequest,
+                                         @RequestPart("cv") MultipartFile multipartFile) {
+        return jobApplyService.jobApply(jobApplyRequest, multipartFile);
     }
 
-    @PostMapping("uploading/{job-apply-id}")
-    ResponseEntity<Void> addJobApplyCV(@RequestPart("multipart-file") MultipartFile multipartFile,
-                                         @PathVariable(name = "job-apply-id") long jobApplyId) {
-        return jobApplyService.addCvToJobApply(multipartFile, jobApplyId);
+    @GetMapping
+    public ResponseEntity<List<JobApplyResponse>> jobApplies() {
+
+        return jobApplyService.findAll();
     }
 }

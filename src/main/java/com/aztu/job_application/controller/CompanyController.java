@@ -5,6 +5,7 @@ import com.aztu.job_application.model.dto.response.CompanyResponse;
 import com.aztu.job_application.service.CompanyService;
 import jakarta.validation.Valid;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,20 +15,16 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/admins/companies")
 @RequiredArgsConstructor
+@Slf4j
 public class CompanyController {
 
     private final CompanyService companyService;
 
     @PostMapping
-    public ResponseEntity<Void> createCompany(@RequestBody @Valid CompanyRequest companyRequest) {
-        return companyService.createCompany(companyRequest);
-    }
+    public ResponseEntity<Void> createCompany(@RequestPart("data") @Valid CompanyRequest companyRequest,
+                                              @RequestPart(value = "image") MultipartFile multipartFile) {
 
-    @PostMapping("uploading/{company-id}")
-    ResponseEntity<Void> addCompanyImage(@RequestPart("multipart-file") MultipartFile multipartFile,
-                                         @PathVariable(name = "company-id") long companyId) {
-        return companyService.addCompanyImage(multipartFile,companyId);
-
+        return companyService.createCompany(companyRequest,multipartFile);
     }
 
     @GetMapping

@@ -43,6 +43,5 @@ public class OpenApiConfig {
                                         .email("www.ecommerce.com").url("nihat@div.edu.az"))
                                 .license(new License().name("E-commerce of API")
                                         .url("API license URL")));
-
         }
 }

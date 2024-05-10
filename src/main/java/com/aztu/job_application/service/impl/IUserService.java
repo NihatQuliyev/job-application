@@ -2,6 +2,7 @@ package com.aztu.job_application.service.impl;
 
 import com.aztu.job_application.mapper.UserMapper;
 import com.aztu.job_application.model.dto.request.*;
+import com.aztu.job_application.model.dto.response.UserResponse;
 import com.aztu.job_application.model.entity.*;
 import com.aztu.job_application.model.entity.userInformation.UserInformation;
 import com.aztu.job_application.model.enums.RoleType;
@@ -18,11 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static com.aztu.job_application.model.enums.ExceptionMessage.USERNAME_NOT_FOUND;
-import static com.aztu.job_application.model.enums.ExceptionMessage.WRONG_PASSWORD;
+import static com.aztu.job_application.model.enums.ExceptionMessage.*;
 import static com.aztu.job_application.model.enums.SuccessMessage.*;
 
 @Service
@@ -44,12 +43,15 @@ public class IUserService implements UserService {
 
     @Override
     @Transactional
-    public ResponseEntity<Void> userRegistration(UserRequest userRequest) {
+    public ResponseEntity<Void> userRegistration(UserRequest userRequest, MultipartFile multipartFile) {
         User mappedUser = userMapper.map(userRequest);
         UserInformation userInformation = userInformationService.buildUserInformation(userRequest);
         mappedUser.setUserInformation(userInformation);
 
-        User user = registration(mappedUser, RoleType.USER);
+        String imageName = UUID.randomUUID() + ".jpg";
+        mappedUser.getUserInformation().setProfileImage(imageName);
+
+        User user = registration(mappedUser, RoleType.USER, multipartFile);
         tokenService.userConfirm(user);
         return ResponseEntity.noContent().build();
     }
@@ -116,34 +118,39 @@ public class IUserService implements UserService {
         return ResponseEntity.ok(CHANGE_PASSWORD_SUCCESSFULLY.getMessage());
     }
 
-    public User registration(User user, RoleType roleType){
+    public User registration(User user, RoleType roleType, MultipartFile multipartFile){
         Role role = roleService.findByRole(roleType.name());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(role);
         TableDetail tableDetail = new TableDetail();
         user.setTableDetail(tableDetail);
+        Optional<User> byEmailAndIsEnableTrue = userRepository.findByEmail(user.getEmail());
+        if (byEmailAndIsEnableTrue.isPresent()){
+            throw new ApplicationException(exceptionService.exceptionResponse(EMAIL_ALREADY.getMessage(), EMAIL_ALREADY.getHttpStatus()));
+        }
         userRepository.save(user);
+        fileService.upload(multipartFile, user.getUserInformation().getProfileImage());
         return user;
     }
 
-    @Override
-    public List<User> findAllUsers() {
-        return userRepository.findAll();
-    }
 
-    @Override
-    @Transactional
-    public ResponseEntity<Void> addUserImage(MultipartFile multipartFile, long userId) {
-        User user = getById(userId);
-        String image  = multipartFile.getOriginalFilename();
-        user.getUserInformation().setProfileImage(image);
-        fileService.upload(multipartFile);
-
-        return ResponseEntity.noContent().build();
-    }
 
     private User getById(long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new ApplicationException(exceptionService.exceptionResponse(USERNAME_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND)));
+    }
+
+    @Override
+    public ResponseEntity<List<UserResponse>> findAllUsers() {
+
+        List<User> users = userRepository.findAll();
+
+        List<UserResponse> userResponses = new LinkedList<>();
+        for (User user : users) {
+            UserResponse userResponse = userMapper.map(user);
+            userResponses.add(userInformationService.findLanguage(user,userResponse));
+        }
+
+        return ResponseEntity.ok(userResponses);
     }
 }

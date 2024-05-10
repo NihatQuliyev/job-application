@@ -1,0 +1,53 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert_multiple_soft_skills
+      author: elchinhuseynli
+      changes:
+        - insert:
+            tableName: soft_skill
+            columns:
+              - column:
+                  name: name
+                  value: Ability to communicate effectively
+        - insert:
+            tableName: soft_skill
+            columns:
+              - column:
+                  name: name
+                  value: Research skills
+        - insert:
+            tableName: soft_skill
+            columns:
+              - column:
+                  name: name
+                  value: Presentation skills
+        - insert:
+            tableName: soft_skill
+            columns:
+              - column:
+                  name: name
+                  value: Working with a team
+        - insert:
+            tableName: soft_skill
+            columns:
+              - column:
+                  name: name
+                  value: Ability to think analytically
+        - insert:
+            tableName: soft_skill
+            columns:
+              - column:
+                  name: name
+                  value: Critical thinking
+        - insert:
+            tableName: soft_skill
+            columns:
+              - column:
+                  name: name
+                  value: Problem solving skills
+        - insert:
+            tableName: soft_skill
+            columns:
+              - column:
+                  name: name
+                  value: Numerical analysis skills

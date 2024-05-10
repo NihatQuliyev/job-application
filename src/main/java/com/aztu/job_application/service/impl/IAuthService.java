@@ -151,7 +151,7 @@ public class IAuthService implements AuthService {
 
 
     public User getAuthenticatedUser() {
-        String username =(String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         return userRepository.findByEmailAndIsEnableTrue(username).orElseThrow();
     }

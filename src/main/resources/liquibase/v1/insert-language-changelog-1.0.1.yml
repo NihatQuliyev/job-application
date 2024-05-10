@@ -1,0 +1,59 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert_multiple_languages
+      author: elchinhuseynli
+      changes:
+        - insert:
+            tableName: language
+            columns:
+              - column:
+                  name: name
+                  value: english
+        - insert:
+            tableName: language
+            columns:
+              - column:
+                  name: name
+                  value: turkish
+        - insert:
+            tableName: language
+            columns:
+              - column:
+                  name: name
+                  value: spanish
+        - insert:
+            tableName: language
+            columns:
+              - column:
+                  name: name
+                  value: french
+        - insert:
+            tableName: language
+            columns:
+              - column:
+                  name: name
+                  value: german
+        - insert:
+            tableName: language
+            columns:
+              - column:
+                  name: name
+                  value: italian
+        - insert:
+            tableName: language
+            columns:
+              - column:
+                  name: name
+                  value: chinese
+        - insert:
+            tableName: language
+            columns:
+              - column:
+                  name: name
+                  value: russian
+        - insert:
+            tableName: language
+            columns:
+              - column:
+                  name: name
+                  value: arabic

@@ -13,14 +13,14 @@ import static com.aztu.job_application.model.constant.ValidationConstant.PASSWOR
 @Setter
 public class PasswordRequest {
 
-    @NotBlank
+    @NotBlank(message = "Update password cannot be blank")
     @Pattern(
             regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
             message = PASSWORD_REGEX
     )
     private String updatePassword;
 
-    @NotBlank
+    @NotBlank(message = "Repeat password cannot be blank")
     @Pattern(
             regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
             message = PASSWORD_REGEX

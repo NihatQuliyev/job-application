@@ -27,7 +27,16 @@ public enum ExceptionMessage {
     LANGUAGE_NOT_FOUND("Language not found!", HttpStatus.NOT_FOUND),
     LANGUAGE_LEVEL_NOT_FOUND("Language level not found!", HttpStatus.NOT_FOUND),
     NOT_FOUND_VACANCY("Not found vacancy!", HttpStatus.NOT_FOUND),
-    JOB_APPLY_NOT_FOUND("Not found job apply!",HttpStatus.NOT_FOUND);
+    JOB_APPLY_NOT_FOUND("Not found job apply!",HttpStatus.NOT_FOUND),
+    EMAIL_ALREADY("Email already exist!", HttpStatus.BAD_REQUEST),
+    COMPANY_ALREADY("Company already exist!", HttpStatus.BAD_REQUEST),
+
+    NOT_SAME_PASSWORD("Not same password",HttpStatus.BAD_REQUEST),
+    BAD_CREDENTIALS_EXCEPTION("Username or password is incorrect",HttpStatus.BAD_REQUEST),
+    ALREADY_YET_SUBS_EXCEPTION("Your subscription is already available",HttpStatus.FORBIDDEN),
+    USERNAME_IS_UNAVAILABLE_EXCEPTION("exception.username-unavailable",HttpStatus.BAD_REQUEST),
+
+    ACCESS_DENIED_EXCEPTION("You are not authorized to perform this operation",HttpStatus.FORBIDDEN);
 
 
     private final String message;

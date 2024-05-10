@@ -9,5 +9,8 @@ import lombok.*;
 @Builder
 @ToString
 public class MilitaryQualificationResponse {
+
+    private long id;
+
     private String name;
 }

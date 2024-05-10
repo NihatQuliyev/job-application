@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert_multiple_employment_statuses
+      author: elchinhuseynli
+      changes:
+        - insert:
+            tableName: employment_status
+            columns:
+              - column:
+                  name: name
+                  value: working (in the major you graduated from)
+        - insert:
+            tableName: employment_status
+            columns:
+              - column:
+                  name: name
+                  value: working (on another specialty)
+        - insert:
+            tableName: employment_status
+            columns:
+              - column:
+                  name: name
+                  value: continue my education
+        - insert:
+            tableName: employment_status
+            columns:
+              - column:
+                  name: name
+                  value: unemployed

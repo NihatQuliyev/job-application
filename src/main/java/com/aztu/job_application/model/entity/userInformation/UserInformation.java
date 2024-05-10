@@ -16,15 +16,20 @@ public class UserInformation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     private String fatherName;
 
     @ManyToOne
     private Gender gender;
 
     private LocalDate birthdate;
+
     private String phoneNumber;
+
     private String fin;
+
     private String address;
+
     private String liveAddress;
 
     @ManyToOne
@@ -37,10 +42,11 @@ public class UserInformation {
     private EducationLevelDetail educationLevelDetail;
 
     @OneToMany(cascade = CascadeType.PERSIST)
+
     private List<EmploymentStatusDetail> employmentStatusDetail;
 
-    @ManyToMany
-    private List<Language> languages;
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    private List<LanguageAndLevel> languages;
 
     @ManyToMany
     private List<SoftSkill> softSkills;

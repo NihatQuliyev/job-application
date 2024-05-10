@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: job-app-backend-app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: job-app-backend-tier
+  template:
+    metadata:
+      labels:
+        app: job-app-backend-tier
+    spec:
+      containers:
+        - name: job-app-backend
+          image: nihat57/job-application:1.0.1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_URL
+              value: jdbc:postgresql://postgresql-job-app-svc-cip:5432/postgres
+            - name: DB_USERNAME
+              value: postgres
+            - name: DB_PASSWORD
+              value: '123456'
+            - name: APP_HOST
+              value: "34.176.247.1"
+            - name: APP_PORT
+              value: "80"

@@ -1,5 +1,6 @@
 package com.aztu.job_application.model.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @AllArgsConstructor
@@ -9,5 +10,6 @@ import lombok.*;
 @Getter
 public class CategoryRequest {
 
+    @NotBlank(message = "Category name cannot be blank")
     private String name;
 }

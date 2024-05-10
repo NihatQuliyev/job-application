@@ -9,5 +9,7 @@ import lombok.*;
 @Builder
 @ToString
 public class LanguageLevelResponse {
-    private String name;
+
+    private long id;
+    private String languageLevel;
 }

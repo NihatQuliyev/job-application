@@ -3,6 +3,7 @@ package com.aztu.job_application.service;
 import com.aztu.job_application.model.dto.request.ChangePasswordRequest;
 import com.aztu.job_application.model.dto.request.PasswordRequest;
 import com.aztu.job_application.model.dto.request.UserRequest;
+import com.aztu.job_application.model.dto.response.UserResponse;
 import com.aztu.job_application.model.entity.User;
 import com.aztu.job_application.model.enums.RoleType;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public interface UserService {
 
-    ResponseEntity<Void> userRegistration(UserRequest request);
+    ResponseEntity<Void> userRegistration(UserRequest request, MultipartFile multipartFile);
 
     ResponseEntity<Void> userConfirmation(String token);
 
@@ -26,9 +27,8 @@ public interface UserService {
 
     ResponseEntity<String> userChangePassword(ChangePasswordRequest changePasswordRequest);
 
-    User registration(User user, RoleType roleType);
+    User registration(User user, RoleType roleType, MultipartFile multipartFile);
 
-    List<User> findAllUsers();
+    ResponseEntity<List<UserResponse>> findAllUsers();
 
-    ResponseEntity<Void> addUserImage(MultipartFile multipartFile, long userId);
 }

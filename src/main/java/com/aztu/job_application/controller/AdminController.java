@@ -8,6 +8,7 @@ import com.aztu.job_application.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,19 +20,15 @@ public class AdminController {
     private final AdminService adminService;
 
     @PostMapping("/registration")
-    public ResponseEntity<Void> registration(@RequestBody AdminRequest adminRequest) {
-        return adminService.registration(adminRequest);
+    public ResponseEntity<Void> registration(@RequestPart("data") AdminRequest adminRequest,
+                                             @RequestPart("image")MultipartFile multipartFile) {
+        return adminService.registration(adminRequest, multipartFile);
     }
 
     @PostMapping("/confirmation")
     public ResponseEntity<Void> confirmation(@RequestParam String token,
                                              @RequestBody PasswordRequest passwordRequest) {
         return adminService.adminConfirmation(token, passwordRequest);
-    }
-
-    @GetMapping("/find-all-users")
-    public ResponseEntity<List<UserResponse>> findAllUsers() {
-        return adminService.findAllUsers();
     }
 
 }

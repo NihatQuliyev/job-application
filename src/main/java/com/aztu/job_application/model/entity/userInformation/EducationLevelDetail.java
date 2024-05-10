@@ -22,7 +22,7 @@ public class EducationLevelDetail {
 
     private String degree;
 
-    @OneToOne
+    @ManyToOne
     private EducationLevel educationLevel;
 
 }
